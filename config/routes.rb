@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+  devise_for :users
+  root 'users#index'
+
+  get '/secret', to: 'pages#secret', as: :secret
+=begin
   get 'bookings/new'
 
   get 'bookings/create'
@@ -40,6 +46,7 @@ Rails.application.routes.draw do
   get 'users/index'
 
   get 'users/show'
+=end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
