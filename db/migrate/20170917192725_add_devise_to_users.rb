@@ -1,6 +1,5 @@
 class AddDeviseToUsers < ActiveRecord::Migration[5.0]
   def self.up
-    drop_table :users
     create_table :users do |t|
 
       t.string :name
