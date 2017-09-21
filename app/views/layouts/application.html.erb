@@ -18,8 +18,15 @@
         <ul class="nav navbar-nav">
           <li><%= link_to 'Home', root_path %></li>
           <% if user_signed_in? %>
-              <li><%= link_to 'Secret', secret_path %></li>
-          <% end %>
+              <!-- TODO-->
+              <% if current_user.try(:admin?) %>
+                  <li><%= link_to 'Admin', secret_path %></li>
+              <% elsif current_user.superadmin? %>
+                  <li><%= link_to 'Super Admin', secret_path %></li>
+              <% elsif current_user.user? %>
+                 <li><%= link_to 'User', secret_path %></li>
+              <% end %>
+        <% end %>
         </ul>
         <ul class="nav navbar-nav pull-right">
           <% if user_signed_in? %>
