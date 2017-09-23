@@ -1,0 +1,7 @@
+*.cache
+*.log
+restart.txt
+*.pid
+*.sqlite3
+
+.bundle/
