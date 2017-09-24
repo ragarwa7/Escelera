@@ -18,12 +18,20 @@ To run the app locally, follow these stops:
 ```
 bundle install --without production
 ```
+
 ### Complete Database Migrations
 ```
 rails db:migrate
 ```
+
+### Add pre-configured superadmins, admins and users
+```
+rails db:seed
+```
+
 ### Run server
 ```
 rails server
 ```
+
 Your app will run on http://localhost:3000
