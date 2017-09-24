@@ -1,12 +1,14 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:show_all, :edit, :show, :destroy, :update]
+  before_action :authenticate_user!, only: []
+  before_action :authorize_admin, only: [:new, :create, :destroy, :show_all, :edit, :show, :update]
 
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
   def edit
     @user = User.find(params[:id])
+    @role = params[:role]
   end
 
   def show_all
@@ -15,7 +17,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @users }
+      format.json {render json: @users}
     end
   end
 
@@ -24,42 +26,46 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @bookings }
+      format.json {render json: @bookings}
     end
   end
 
   def update
     @user = User.find(params[:id])
+    @role = params[:role]
 
     respond_to do |format|
       if @user.update_attributes(user_params)
-        flash[:notice] = "User #{@user.name} was successfully updated."
-        format.html { redirect_to action: "show_all"}
+        flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully updated."
+        format.html {redirect_to action: "show_all", role: @role}
       else
         flash[:notice] = "Please verify the details"
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html {render action: "edit"}
+        format.json {render json: @user.errors, status: :unprocessable_entity}
       end
     end
   end
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+    @role = params[:role]
 
+    return if(@role.equal?"superadmin")
+
+    @user.destroy
     respond_to do |format|
-      flash[:notice] = "User #{@user.name} was successfully deleted."
-      format.html { redirect_to action: "show_all" }
-      format.json { head :no_content }
+      flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully deleted."
+      format.html {redirect_to action: "show_all", role: @role}
+      format.json {head :no_content}
     end
   end
 
   def new
     @user = User.new
-
+    @role = params[:role]
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @user }
+      format.json {render json: @user}
     end
   end
 
@@ -67,15 +73,31 @@ class UsersController < ApplicationController
   # POST /user.json
   def create
     @user = User.new(user_params)
+    @role = params[:role]
 
+    authorize_superadmin if(@role.equal?"superadmin")
+
+    @user.role = User.roles[@role.to_sym]
     respond_to do |format|
       if @user.save
-        flash[:notice] = "User #{@user.name} was successfully created."
-        format.html { redirect_to action: "show_all" }
+        flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully created."
+        format.html {redirect_to action: "show_all", role: @role}
       else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        flash[:notice] = "Please verify the details"
+        format.html {render action: "new"}
+        format.json {render json: @user.errors, status: :unprocessable_entity}
       end
     end
   end
+
+  def authorize_admin
+    return unless !current_user.try(:admin?) and !current_user.try(:superadmin?)
+    redirect_to root_path, alert: 'Admins only!'
+  end
+
+  def authorize_superadmin
+    return unless !current_user.try(:superadmin?)
+    redirect_to root_path, alert: 'Super Admins only!'
+  end
+
 end
