@@ -1,0 +1,53 @@
+<%= form_for(@car) do |f| %>
+  <% if @car.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@car.errors.count, "error") %> prohibited this car from being saved:</h2>
+
+      <ul>
+      <% @car.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :model %><br>
+    <%= f.text_field :model %>
+  </div>
+  <div class="field">
+    <%= f.label :manufacturer %><br>
+    <%= f.text_field :manufacturer %>
+  </div>
+  <div class="field">
+    <%= f.label :number %><br>
+    <%= f.text_field :number %>
+  </div>
+  <div class="field">
+    <%= f.label :rate %><br>
+    <%= f.text_field :rate %>
+  </div>
+  <div class="field">
+    <%= f.label :style %><br>
+    <%= f.select :style do %>
+      <% ['Hatchback', 'Sedan', 'SUV'].each do |c| %>
+        <%= content_tag(:option, c, value: c) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.select :status do %>
+      <% ["Available", "Checked Out", "Reserved"].each do |c| %>
+        <%= content_tag(:option, c, value: c) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.label :location %><br>
+    <%= f.text_field :location %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

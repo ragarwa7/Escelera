@@ -12,7 +12,7 @@
               <% if current_user.try(:superadmin?)   %>
                   <li><%= link_to 'Super Admins', show_all_path(:role => "superadmin"), method: :get %></li>
               <% end %>
-              <li><%= link_to 'Cars', destroy_user_session_path, method: :delete %></li>
+              <li><%= link_to 'Cars', cars_path %></li>
             </ul>
       <% elsif current_user.try(:user?)  %>
             <ul class="dropdown-menu" role="menu">
