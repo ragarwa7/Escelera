@@ -1,2 +1,7 @@
-<h1>Cars#index</h1>
-<p>Find me in app/views/cars/index.html.erb</p>
+<div class="container">
+  <% if @cars.length <= 0 %>
+    <h1>Cars will be added to the system soon</h1>
+  <% else %>
+    <h1>This will house the car listings</h1>
+  <% end %>
+</div>
