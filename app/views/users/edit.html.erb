@@ -1,6 +1,6 @@
 <% header "Edit #{@user.name.to_s.humanize}" %>
 
-<%= form_for(@user, url: {action: 'update', controller: '/users'}, html: { method: :put }) do |f| %>
+<%= form_for(@user, url: user_path(:role=>@role), html: { method: :put }) do |f| %>
     <%= devise_error_messages! %>
     <div class="form-group">
       <%= f.label :name %>

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates :name, :presence => true
 
   def set_default_role
-    self.role ||= :user
+    self.role ||= :user if self.role.nil?
   end
 
 end
