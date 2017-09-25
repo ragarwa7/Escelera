@@ -36,7 +36,12 @@ class CarsController < ApplicationController
   end
 
   def index
-    @cars = Car.all
+    @booking = Booking.where("user_id = ?", current_user.id)
+    if @booking.length > 0 then
+      @cars = []
+    else
+      @cars = Car.all
+    end
   end
 
   def show

@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_action :authorize_user
   before_action :set_car
+  before_action :set_booking, only: [:show, :edit, :update, :destroy]
 
   def new
     @booking = Booking.new
@@ -21,22 +22,21 @@ class BookingsController < ApplicationController
     @pass = false
     @msg = ""
 
-
-      if @temp.length > 0 then
-        if (@pickup > @return) && (pickup > Time.now) then
-          if ((@return - @pickup)/1.day).to_i <= 7 then
-            if @car.save then
-              @pass = true
-            end
-          else
-            @msg = "Error: Booking period can't be more than 7 days"
+    if @temp.length > 0 then
+      if (@pickup > @return) && (pickup > Time.now) then
+        if ((@return - @pickup)/1.day).to_i <= 7 then
+          if @car.save then
+            @pass = true
           end
         else
-          @msg = "Error: Please check your pickup_time and return_time"
+          @msg = "Error: Booking period can't be more than 7 days"
         end
       else
-        @msg = "Error: Some car is already booked within that period"
+        @msg = "Error: Please check your pickup_time and return_time"
       end
+    else
+      @msg = "Error: Some car is already booked within that period"
+    end
 
     respond_to do |format|
       if @pass then
