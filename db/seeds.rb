@@ -13,3 +13,10 @@ User.create :name => 'kamal' , :email => 'kamal@abc.com', :password => 'kamal123
 User.create :name => 'Yash' , :email => 'ybajori@ncsu.edu', :password => 'yash123', :role => 2
 User.create :name => 'Racs', :email => 'rachit.grwl9@gmail.com', :password => 'racs123', :role => 1
 User.create :name => 'Rachit' , :email => 'ragarwa@ncsu.edu', :password => 'rachit123', :role => 0
+
+Car.create :model => 'crv', :manufacturer => 'honda' ,:number => '123' , :rate => '10' ,:style => 'SUV' , :location => 'raleigh' ,:status => 'Available'
+Car.create :model => 'cruze', :manufacturer => 'cheverlot' ,:number => '345' , :rate => '15' ,:style => 'Sedan' , :location => 'cary' ,:status => 'Available'
+Car.create :model => 'figo', :manufacturer => 'ford' ,:number => '678' , :rate => '08' ,:style => 'Hatchback' , :location => 'cary' ,:status => 'Reserved'
+Car.create :model => 'city', :manufacturer => 'honda' ,:number => '321' , :rate => '12' ,:style => 'Sedan' , :location => 'raleigh' ,:status => 'Reserved'
+Car.create :model => 'a4', :manufacturer => 'audi' ,:number => '888' , :rate => '24' ,:style => 'Sedan' , :location => 'durham' ,:status => 'Checked Out'
+Car.create :model => 'q7', :manufacturer => 'audi' ,:number => '777' , :rate => '25' ,:style => 'SUV' , :location => 'durham' ,:status => 'Checked Out'
