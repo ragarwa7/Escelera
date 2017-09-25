@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   devise_for :users, :path_prefix => 'd'
   resources :users
-  resources :cars
+  resources :cars do
+    resources :bookings
+  end
 
   root 'users#index'
 

@@ -1,2 +1,32 @@
-<h1>Bookings#new</h1>
-<p>Find me in app/views/bookings/new.html.erb</p>
+<h1>Book Car</h1>
+<h3>Model: <%= @car.model %></h3>
+<h3>Manufacturer: <%= @car.manufacturer %></h3>
+<h3>Style: <%= @car.style %></h3>
+<h3>Location: <%= @car.location %></h3>
+
+<%= form_for [@car, @booking] do |f| %>
+  <% if @booking.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
+
+      <ul>
+      <% @booking.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class='field'>
+    <%= f.label :pickup_time %><br>
+    <%= f.datetime_local_field :pickup_time, class: "form-control" %>
+  </div>
+  <br />
+  <div class='field'>
+    <%= f.label :return_time %><br>
+    <%= f.datetime_field :return_time, class: "form-control" %>
+  </div>
+  <br />
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
