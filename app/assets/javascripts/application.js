@@ -14,3 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap/dropdown
 //= require turbolinks
+//= require moment
+//= require bootstrap-datetimepicker
+//= require bookings

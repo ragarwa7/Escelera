@@ -1,24 +1,37 @@
-# README
+# Escelera
+This Repo hosts the code for Car Rental App based on Ruby and Rails as a part of OODD course.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[1]: http://rent-godrive.herokuapp.com
 
-Things you may want to cover:
+## Team Members
+* Amit Kanwar (akanwar2)
+* Kamal Sharma (ksharma5)
+* Rachit Agarwal (ragarwa7)
 
-* Ruby version
+## Deployment
+The production build of the app is deployed on [Heroku][1]
 
-* System dependencies
+## Development
+To run the app locally, follow these stops:
 
-* Configuration
+### Install gems
+```
+bundle install --without production
+```
 
-* Database creation
+### Complete Database Migrations
+```
+rails db:migrate
+```
 
-* Database initialization
+### Add pre-configured superadmins, admins and users
+```
+rails db:seed
+```
 
-* How to run the test suite
+### Run server
+```
+rails server
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Your app will run on http://localhost:3000

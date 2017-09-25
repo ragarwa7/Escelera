@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  devise_for :users, :path_prefix => 'd'
+  resources :users
+  resources :cars do
+    resources :bookings
+  end
+
   root 'users#index'
 
-  get '/secret', to: 'pages#secret', as: :secret
+  get '/secret', to: 'users#secret', as: :secret
+  match '/show_all',   to: 'users#show_all', via: 'get'
+
 =begin
   get 'bookings/new'
 
