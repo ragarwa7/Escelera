@@ -14,9 +14,14 @@ User.create :name => 'Yash' , :email => 'ybajori@ncsu.edu', :password => 'yash12
 User.create :name => 'Racs', :email => 'rachit.grwl9@gmail.com', :password => 'racs123', :role => 1
 User.create :name => 'Rachit' , :email => 'ragarwa@ncsu.edu', :password => 'rachit123', :role => 0
 
-Car.create :model => 'crv', :manufacturer => 'honda' ,:number => '123' , :rate => '10' ,:style => 'SUV' , :location => 'raleigh' ,:status => 'Available'
-Car.create :model => 'cruze', :manufacturer => 'cheverlot' ,:number => '345' , :rate => '15' ,:style => 'Sedan' , :location => 'cary' ,:status => 'Available'
-Car.create :model => 'figo', :manufacturer => 'ford' ,:number => '678' , :rate => '08' ,:style => 'Hatchback' , :location => 'cary' ,:status => 'Reserved'
-Car.create :model => 'city', :manufacturer => 'honda' ,:number => '321' , :rate => '12' ,:style => 'Sedan' , :location => 'raleigh' ,:status => 'Reserved'
-Car.create :model => 'a4', :manufacturer => 'audi' ,:number => '888' , :rate => '24' ,:style => 'Sedan' , :location => 'durham' ,:status => 'Checked Out'
-Car.create :model => 'q7', :manufacturer => 'audi' ,:number => '777' , :rate => '25' ,:style => 'SUV' , :location => 'durham' ,:status => 'Checked Out'
+Car.create :model => 'crv', :manufacturer => 'honda' ,:number => '123' , :rate => '10' ,:style => 'SUV' , :location => 'raleigh'
+Car.create :model => 'cruze', :manufacturer => 'cheverlot' ,:number => '345' , :rate => '15' ,:style => 'Sedan' , :location => 'cary'
+Car.create :model => 'figo', :manufacturer => 'ford' ,:number => '678' , :rate => '08' ,:style => 'Hatchback' , :location => 'cary'
+Car.create :model => 'city', :manufacturer => 'honda' ,:number => '321' , :rate => '12' ,:style => 'Sedan' , :location => 'raleigh'
+Car.create :model => 'a4', :manufacturer => 'audi' ,:number => '888' , :rate => '24' ,:style => 'Sedan' , :location => 'durham'
+Car.create :model => 'q7', :manufacturer => 'audi' ,:number => '777' , :rate => '25' ,:style => 'SUV' , :location => 'durham'
+
+
+Booking.create :pickup_time => "2017-9-28 13:00:00", :return_time => "2017-9-28 15:00:00", :user_id => 8, :car_id => 38, :status => 3
+Booking.create :pickup_time => "2017-9-27 15:00:00", :return_time => "2017-9-28 17:00:00", :user_id => 5, :car_id => 39, :status => 1
+Booking.create :pickup_time => "2017-9-30 01:00:00", :return_time => "2017-9-30 21:00:00", :user_id => 5, :car_id => 39, :status => 2

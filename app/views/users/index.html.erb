@@ -2,16 +2,18 @@
     <div class="jumbotron">
       <div class="container">
         <% if user_signed_in? %>
-          <h1>Welcome <%= current_user.name %></h1>
-          <p>
-            <%= link_to 'Rent a Car', cars_path, class: 'btn btn-primary btn-lg' %>
-          </p>
+            <h1>Welcome <%= current_user.name %></h1>
+            <% if current_user.try(:user?) %>
+                <p>
+                  <%= link_to 'Rent a Car', cars_path, class: 'btn btn-primary btn-lg' %>
+                </p>
+            <% end %>
         <% else %>
-          <h1>Welcome to Escelera!</h1>
-          <p>Register to get started.</p>
-          <p>
-            <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary btn-lg' %>
-          </p>
+            <h1>Welcome to Escelera!</h1>
+            <p>Register to get started.</p>
+            <p>
+              <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary btn-lg' %>
+            </p>
         <% end %>
       </div>
     </div>

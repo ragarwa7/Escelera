@@ -1,17 +1,20 @@
-<% if @cars.length <= 0 %>
+<% if current_user.try(:user?) and @booking.length > 0   %>
   <h1>It seems like you already have a car in the booking state.
     Please manage it before booking a new one</h1>
 <% else %>
   <h1>Listing Cars</h1>
+    <%= render 'search' %><br><br>
   <table class="table">
     <tr>
-      <th>Name</th>
+      <th>Model</th>
       <th>Manufacturer</th>
       <th>Number</th>
       <th>Style</th>
       <th>Rate</th>
       <th>Location</th>
-      <th>Status</th>
+      <% if !current_user.try(:user?)  %>
+      <th>Current status</th>
+      <% end %>
       <th></th>
       <% if current_user.try(:admin?) or current_user.try(:superadmin?) %>
         <th></th>
@@ -26,9 +29,14 @@
         <td><%= car.style %></td>
         <td><%= car.rate %></td>
         <td><%= car.location %></td>
-        <td><%= link_to "Book", new_car_booking_path(car) %></td>
-        <% if (current_user.try(:admin?) or current_user.try(:superadmin?)) and car.status == "Available" %>
-          <td><%= link_to "Edit", edit_car_path(car) %></td>
+        <% if current_user.try(:user?)  %>
+          <td><%= link_to "Book", new_car_booking_path(car) %></td>
+        <% else %>
+          <td><%= car.status.html_safe %> <br>
+            <small><i><%= link_to "All Bookings", car_history_path(car), method: :get %></i></small>
+                <% end %>
+        <% if (current_user.try(:admin?) or current_user.try(:superadmin?))%>   <!-- and car.status == "Available"   //need to confirm this-->
+            <td><%= link_to "Edit", edit_car_path(car) %></td>
           <td><%= link_to "Delete", car, method: :delete, data: { confirm: "Are you sure?" } %></td>
         <% end %>
       </tr>
@@ -40,5 +48,6 @@
 <% if current_user.try(:admin?) or current_user.try(:superadmin?) %>
   <p>
     <%= link_to 'Add Car', new_car_path, class: 'btn btn-primary' %>
+    <%= link_to "Back", :back, class: 'btn btn-primary' %>
   </p>
 <% end %>

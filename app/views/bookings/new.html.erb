@@ -18,15 +18,31 @@
   <% end %>
   <div class='field'>
     <%= f.label :pickup_time %><br>
-    <%= f.datetime_local_field :pickup_time, class: "form-control" %>
+    <div class='input-group date' id='datetimepicker1'>
+      <%= f.text_field :pickup_time, id: 'datetimepicker1', class: "form-control" %>
+      <span class="input-group-addon">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </span>
+    </div>
   </div>
   <br />
   <div class='field'>
     <%= f.label :return_time %><br>
-    <%= f.datetime_field :return_time, class: "form-control" %>
+    <div class='input-group date' id='datetimepicker1'>
+    <%= f.text_field :return_time,id: 'datetimepicker1', class: "form-control" %>
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </span>
+  </div>
   </div>
   <br />
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+</script>

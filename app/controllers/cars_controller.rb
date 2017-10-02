@@ -25,6 +25,13 @@ class CarsController < ApplicationController
   end
 
   def edit
+    @car = Car.find(params[:id])
+    @car.status = "Available"
+    @booking = Booking.where("car_id = ? AND pickup_time <= ? AND return_time >=  ?",params[:id],DateTime.now.to_s(:db),DateTime.now.to_s(:db))
+    if @booking.exists?
+      @car.status = @booking.last["status"].capitalize
+    end
+
   end
 
   def destroy
@@ -36,15 +43,28 @@ class CarsController < ApplicationController
   end
 
   def index
-    @booking = Booking.where("user_id = ?", current_user.id)
-    if @booking.length > 0 then
-      @cars = []
+    @search = Car.search(params[:q])
+    @cars = @search.result
+    if (current_user.try(:user?))
+      @booking = Booking.where(:user_id => current_user.id).where.not(status: 3)
     else
-      @cars = Car.all
+      @cars.each do |car|
+        car.status = car_status car
+      end
     end
+    @cars
   end
 
   def show
+  end
+
+  def search
+    @search = Car.search(params[:q])
+    @cars = @search.result
+  end
+
+  def bookings
+    @bookings = Booking.find_by_car_id(params[:car_id])
   end
 
   def authorize_user
@@ -66,5 +86,16 @@ class CarsController < ApplicationController
     def car_params
       params.require(:car).permit(:model, :manufacturer, :number,
                                   :rate, :style, :location, :status)
+    end
+
+    def car_status car
+      @booking = Booking.where("car_id = ? AND pickup_time <= ? AND return_time >=  ?",car.id,DateTime.now.to_s(:db),DateTime.now.to_s(:db))
+      status = "Available"
+      if @booking.exists?
+        booking = @booking.last
+        user = User.find(booking["user_id"])
+        status = booking["status"].capitalize + " by " + view_context.link_to(user.name, user_path(user))
+      end
+      status
     end
 end

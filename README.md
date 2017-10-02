@@ -13,7 +13,7 @@ The production build of the app is deployed on [Heroku][1]
 
 ## Test Data
 * Superadmin (email:'sadmin@abc.com', password: 'sadmin')
-* admin(email => 'amith@abc.com', password => 'amith123)
+* admin(email: 'amith@abc.com', password: 'amith123')
 ## Development
 To run the app locally, follow these stops:
 

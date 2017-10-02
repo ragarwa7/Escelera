@@ -22,7 +22,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    @bookings = Booking.find(params[:id])
+    @bookings = Booking.where(:user_id => (params[:id])).all.sort_by &:created_at
+    @user = User.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
