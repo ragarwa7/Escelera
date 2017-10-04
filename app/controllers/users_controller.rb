@@ -71,7 +71,7 @@ class UsersController < ApplicationController
   end
 
   def booking
-    @booking = Booking.where(:user_id => current_user.id)
+    @bookings = Booking.where(:user_id => current_user.id).joins(:car).order(:created_at).reverse_order.to_a()
   end
 
   # POST /user

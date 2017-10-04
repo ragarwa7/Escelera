@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   match '/show_all',   to: 'users#show_all', via: 'get'
   get '/search', to: 'cars#search', via: 'get'
   get '/users/:id/bookings', to: 'users#booking', as: :user_bookings
+  get '/bookings/:id/check_out', to: 'bookings#check_out', as: :check_out
+  get '/bookings/:id/return', to: 'bookings#return', as: :return
+  get '/bookings/:id/cancel', to: 'bookings#cancel', as: :cancel_booking
 
 =begin
   get 'bookings/new'

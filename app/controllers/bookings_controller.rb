@@ -12,24 +12,21 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.car_id = @car.id
     @booking.user_id = current_user.id
-    print @booking.pickup_time, @booking.return_time, @booking.car_id, @booking.user_id
+    @booking.status = 1
+
     @pickup = @booking.pickup_time
     @return = @booking.return_time
 
-    puts "Before: ", @return
-
     @temp = Booking.where("pickup_time >= ? and return_time <= ?", @pickup, @pickup).or(
-            Booking.where("pickup_time >= ? and return_time <= ?", @return, @return))
+            Booking.where("pickup_time >= ? and return_time <= ?", @return, @return)).to_a()
 
     @pass = false
     @msg = ""
 
-    puts "After: ", @return
-
-    if !@temp.any? then
+    if @temp.length <= 0 then
       if ((@return - @pickup)/ 1.day).to_i <= 7 then
         if ((@return - @pickup)/ 1.hour).to_i >= 1 then
-          if @car.save then
+          if @booking.save then
             @pass = true
           end
         else
@@ -44,8 +41,7 @@ class BookingsController < ApplicationController
 
     respond_to do |format|
       if @pass then
-        format.html { redirect_to @booking, notice: 'Booking was successfully created' }
-        format.json { render action: 'show', status: :created, location: @booking }
+        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Booking was successfully created' }
       else
         flash[:notice] = @msg
         format.html { render action: 'new' }
@@ -66,6 +62,36 @@ class BookingsController < ApplicationController
   def index
   end
 
+  def check_out
+    @booking = Booking.find(params[:id])
+    @booking.status = 2
+    respond_to do |format|
+      if @booking.save then
+        format.html { redirect_to user_bookings_url(current_user.id), notice: 'You have successfully checkout out your car.'}
+      else
+        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Something went wrong while checking out. Please try again'}
+      end
+    end
+  end
+
+  def return
+    @booking = Booking.find(params[:id])
+    @booking.status = 3
+    respond_to do |format|
+      if @booking.save then
+        format.html { redirect_to user_bookings_url(current_user.id), notice: 'You have successfully returned your car.'}
+      else
+        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Something went wrong while returning the car. Please try again'}
+      end
+    end
+  end
+
+  def cancel
+    @booking = Booking.find(params[:id])
+    @booking.delete
+    redirect_to user_bookings_url(current_user.id)
+  end
+
   def show
     @bookings = Booking.find(params[:user_id])
   end
@@ -81,7 +107,11 @@ class BookingsController < ApplicationController
   end
 
   def set_car
-    @car = Car.find(params[:car_id])
+    if params.key?("car_id")
+      @car = Car.find(params[:car_id])
+    else
+      @car = ""
+    end
   end
 
   def set_booking
