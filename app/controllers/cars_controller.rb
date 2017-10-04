@@ -47,10 +47,14 @@ class CarsController < ApplicationController
     @cars = @search.result
     if (current_user.try(:user?))
       @booking = Booking.where(:user_id => current_user.id).where.not(status: 3)
-    else
+    end
+
+    if !@booking.any? then
       @cars.each do |car|
         car.status = car_status car
       end
+    else
+      @cars = []
     end
     @cars
   end

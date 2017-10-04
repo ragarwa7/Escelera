@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/car_history', to: 'cars#bookings', via: 'get'
   match '/show_all',   to: 'users#show_all', via: 'get'
   get '/search', to: 'cars#search', via: 'get'
+  get '/users/:id/bookings', to: 'users#booking', as: :user_bookings
 
 =begin
   get 'bookings/new'

@@ -12,9 +12,11 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.car_id = @car.id
     @booking.user_id = current_user.id
-
+    print @booking.pickup_time, @booking.return_time, @booking.car_id, @booking.user_id
     @pickup = @booking.pickup_time
     @return = @booking.return_time
+
+    puts "Before: ", @return
 
     @temp = Booking.where("pickup_time >= ? and return_time <= ?", @pickup, @pickup).or(
             Booking.where("pickup_time >= ? and return_time <= ?", @return, @return))
@@ -22,17 +24,19 @@ class BookingsController < ApplicationController
     @pass = false
     @msg = ""
 
-    if @temp.length > 0 then
-      if (@pickup > @return) && (pickup > Time.now) then
-        if ((@return - @pickup)/1.day).to_i <= 7 then
+    puts "After: ", @return
+
+    if !@temp.any? then
+      if ((@return - @pickup)/ 1.day).to_i <= 7 then
+        if ((@return - @pickup)/ 1.hour).to_i >= 1 then
           if @car.save then
             @pass = true
           end
         else
-          @msg = "Error: Booking period can't be more than 7 days"
+          @msg = "Error: Minimum rental time is atleast 1 hour"
         end
       else
-        @msg = "Error: Please check your pickup_time and return_time"
+        @msg = "Error: Booking period can't be more than 7 days"
       end
     else
       @msg = "Error: Some car is already booked within that period"

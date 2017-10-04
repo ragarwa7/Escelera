@@ -1,6 +1,8 @@
-<% if current_user.try(:user?) and @booking.length > 0   %>
-  <h1>It seems like you already have a car in the booking state.
-    Please manage it before booking a new one</h1>
+<% if @cars.length > 0   %>
+  <div class="jumbotron">
+    <h4 class="text-center">It seems like you already have a car in the booking state.
+    Please manage it before booking a new one</h4>
+  </div>
 <% else %>
   <h1>Listing Cars</h1>
     <%= render 'search' %><br><br>

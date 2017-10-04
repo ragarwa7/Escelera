@@ -16,7 +16,7 @@
             </ul>
       <% elsif current_user.try(:user?)  %>
             <ul class="dropdown-menu" role="menu">
-              <li><%= link_to 'Bookings', edit_user_registration_path %></li>
+              <li><%= link_to 'Bookings', user_bookings_url(current_user.id) %></li>
             </ul>
       <% end %>
 

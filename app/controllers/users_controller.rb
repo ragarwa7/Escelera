@@ -70,6 +70,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def booking
+    @booking = Booking.where(:user_id => current_user.id)
+  end
+
   # POST /user
   # POST /user.json
   def create
