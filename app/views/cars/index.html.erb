@@ -14,10 +14,7 @@
       <th>Style</th>
       <th>Rate</th>
       <th>Location</th>
-      <% if !current_user.try(:user?)  %>
-      <th>Current status</th>
-      <% end %>
-      <th></th>
+      <th>Action</th>
       <% if current_user.try(:admin?) or current_user.try(:superadmin?) %>
         <th></th>
         <th></th>
@@ -31,9 +28,8 @@
         <td><%= car.style %></td>
         <td><%= car.rate %></td>
         <td><%= car.location %></td>
-        <% if current_user.try(:user?)  %>
-          <td><%= link_to "Book", new_car_booking_path(car) %></td>
-        <% else %>
+        <td><%= link_to "Book", new_car_booking_path(car) %></td>
+        <% if !current_user.try(:user?) %>
           <td><%= car.status.html_safe %> <br>
             <small><i><%= link_to "All Bookings", car_history_path(car), method: :get %></i></small>
                 <% end %>

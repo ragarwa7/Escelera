@@ -5,14 +5,22 @@ class BookingsController < ApplicationController
 
   def new
     @booking = Booking.new
-    puts @booking
+    @users = User.where("role" => 0).to_a()
+    print "Hello: ", @users
   end
 
   def create
     @booking = Booking.new(booking_params)
     @booking.car_id = @car.id
-    @booking.user_id = current_user.id
-    @booking.status = 1
+    @users = User.where("role" => 0).to_a()
+    @check = true
+    if !booking_params.key?("user_id") then
+      @booking.user_id = current_user.id
+    else
+      if Booking.where("user_id = ? AND status != 3", @booking.user_id).to_a().length > 0 then
+        @check = false
+      end
+    end
 
     @pickup = @booking.pickup_time
     @return = @booking.return_time
@@ -26,8 +34,12 @@ class BookingsController < ApplicationController
     if @temp.length <= 0 then
       if ((@return - @pickup)/ 1.day).to_i <= 7 then
         if ((@return - @pickup)/ 1.hour).to_i >= 1 then
-          if @booking.save then
-            @pass = true
+          if @check then
+            if @booking.save then
+              @pass = true
+            end
+          else
+            @msg = "Error: This user has already one reserved car. Please return it first."
           end
         else
           @msg = "Error: Minimum rental time is atleast 1 hour"
@@ -41,7 +53,11 @@ class BookingsController < ApplicationController
 
     respond_to do |format|
       if @pass then
-        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Booking was successfully created' }
+        if current_user.try(:user?) then
+          format.html { redirect_to user_bookings_url(current_user.id), notice: 'Booking was successfully created' }
+        else
+          format.html { redirect_to :root, notice: 'Booking was successfully created'}
+        end
       else
         flash[:notice] = @msg
         format.html { render action: 'new' }
@@ -136,6 +152,6 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:pickup_time, :return_time)
+      params.require(:booking).permit(:pickup_time, :return_time, :user_id)
     end
 end

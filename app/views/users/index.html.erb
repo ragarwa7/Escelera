@@ -4,13 +4,13 @@
         <% if user_signed_in? %>
             <h3 class="text-center">Welcome <%= current_user.name %></h3>
             <br />
-            <h4 class="text-center">Manage Bookings</h4>
+            <h4 class="text-center">Manage All Bookings</h4>
             <br />
             <% if current_user.try(:user?) %>
                 <p>
                   <%= link_to 'Rent a Car', cars_path, class: 'btn btn-primary btn-lg' %>
                 </p>
-            <% elsif current_user.try(:admin?) %>
+            <% elsif current_user.try(:admin?) or current_user(:superadmin?) %>
                 <table class="table">
                   <tr>
                     <th>Model</th>
@@ -30,7 +30,7 @@
                           <%= link_to "Cancel/", cancel_booking_url(book.id), data: { confirm: "Are you sure? "} %>
                           <%= link_to "Check Out", check_out_url(book.id) %>
                         <% elsif book.status == "returned" %>
-                          <%= link_to "Reserve" %>
+                          None
                         <% elsif book.status == "checkOut" %>
                           <%= link_to "Return", return_url(book.id) %>
                         <% end %>
