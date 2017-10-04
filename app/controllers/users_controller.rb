@@ -31,12 +31,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def index
+    if current_user.try(:admin?) then
+      @bookings = Booking.joins(:car).joins(:user).all.order(:created_at).reverse_order
+    end
+  end
+
   def update
     @user = User.find(params[:id])
     @role = params[:role]
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      if @user.update_attributes(user_params) then
         flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully updated."
         format.html {redirect_to action: "show_all", role: @role}
       else

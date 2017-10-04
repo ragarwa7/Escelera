@@ -67,10 +67,16 @@ class BookingsController < ApplicationController
     @booking.status = 2
     respond_to do |format|
       if @booking.save then
-        format.html { redirect_to user_bookings_url(current_user.id), notice: 'You have successfully checkout out your car.'}
+        @notice = "You have successfully checked out the car. Please return on time."
       else
-        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Something went wrong while checking out. Please try again'}
+        @notice = 'Something went wrong while checking out. Please try again'
       end
+      if current_user.try(:user?) then
+        @url = user_bookings_url(current_user.id)
+      else
+        @url = :root
+      end
+      format.html { redirect_to @url, notice: @notice }
     end
   end
 
@@ -79,17 +85,27 @@ class BookingsController < ApplicationController
     @booking.status = 3
     respond_to do |format|
       if @booking.save then
-        format.html { redirect_to user_bookings_url(current_user.id), notice: 'You have successfully returned your car.'}
+        @notice = "You have successfully returned your car"
       else
-        format.html { redirect_to user_bookings_url(current_user.id), notice: 'Something went wrong while returning the car. Please try again'}
+        @notice = 'Something went wrong while returning the car. Please try again'
       end
+      if current_user.try(:user?) then
+        @url = user_bookings_url(current_user.id)
+      else
+        @url = :root
+      end
+      format.html { redirect_to @url, notice: @notice }
     end
   end
 
   def cancel
     @booking = Booking.find(params[:id])
     @booking.delete
-    redirect_to user_bookings_url(current_user.id)
+    if current_user.try(:admin?) then
+      redirect_to user_bookings_url(current_user.id)
+    else
+      redirect_to :root
+    end
   end
 
   def show
