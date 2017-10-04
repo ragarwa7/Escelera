@@ -17,8 +17,8 @@ class BookingsController < ApplicationController
     @pickup = @booking.pickup_time
     @return = @booking.return_time
 
-    @temp = Booking.where("pickup_time >= ? and return_time <= ?", @pickup, @pickup).or(
-            Booking.where("pickup_time >= ? and return_time <= ?", @return, @return)).to_a()
+    @temp = Booking.where("pickup_time > ? and return_time < ?", @pickup, @pickup).or(
+            Booking.where("pickup_time > ? and return_time < ?", @return, @return)).to_a()
 
     @pass = false
     @msg = ""
