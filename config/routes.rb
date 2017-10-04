@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   root 'users#index'
 
   get '/secret', to: 'users#secret', as: :secret
+  get '/car_history', to: 'cars#bookings', via: 'get'
   match '/show_all',   to: 'users#show_all', via: 'get'
+  get '/search', to: 'cars#search', via: 'get'
 
 =begin
   get 'bookings/new'
