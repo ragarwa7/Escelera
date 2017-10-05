@@ -1,39 +1,33 @@
-require 'test_helper'
+  require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:one)
+  end
+
+  test "should get index" do
+    get :index
+    assert_response :success
+    assert_not_nil assigns(:users)
+  end
+
   test "should get new" do
-    get users_new_url
+    get :new
     assert_response :success
   end
 
-  test "should get create" do
-    get users_create_url
-    assert_response :success
-  end
+ 
 
-  test "should get update" do
-    get users_update_url
+  test "should show user" do
+    get :show, id: @user
     assert_response :success
   end
 
   test "should get edit" do
-    get users_edit_url
+    get :edit, id: @user
     assert_response :success
   end
 
-  test "should get destroy" do
-    get users_destroy_url
-    assert_response :success
-  end
-
-  test "should get index" do
-    get users_index_url
-    assert_response :success
-  end
-
-  test "should get show" do
-    get users_show_url
-    assert_response :success
-  end
+  
 
 end

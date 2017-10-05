@@ -22,11 +22,18 @@ class UsersController < ApplicationController
   end
 
   def show
-    @bookings = Booking.find(params[:id])
+    @bookings = Booking.where(:user_id => (params[:id])).all.sort_by &:created_at
+    @user = User.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
       format.json {render json: @bookings}
+    end
+  end
+
+  def index
+    if !current_user.try(:user?) then
+      @bookings = Booking.joins(:car).joins(:user).all.order(:created_at).reverse_order
     end
   end
 
@@ -35,7 +42,7 @@ class UsersController < ApplicationController
     @role = params[:role]
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      if @user.update_attributes(user_params) then
         flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully updated."
         format.html {redirect_to action: "show_all", role: @role}
       else
@@ -52,9 +59,14 @@ class UsersController < ApplicationController
 
     return if(@role.equal?"superadmin")
 
-    @user.destroy
-    respond_to do |format|
+    if Booking.where("user_id = ? AND status != 3", @user.id).to_a().length > 0 then
+      flash[:notice] = "User #{@user.name.capitalize} holds a car. Please manage booking before deleting this User"
+    else
+      @user.destroy
       flash[:notice] = "#{@role.capitalize} #{@user.name.capitalize} was successfully deleted."
+    end
+
+    respond_to do |format|
       format.html {redirect_to action: "show_all", role: @role}
       format.json {head :no_content}
     end
@@ -67,6 +79,11 @@ class UsersController < ApplicationController
       format.html # new.html.erb
       format.json {render json: @user}
     end
+  end
+
+  def booking
+    @user = User.where(:id => params[:id]).last
+    @bookings = Booking.where(:user_id => params[:id]).joins(:car).order(:created_at).reverse_order.to_a()
   end
 
   # POST /user
