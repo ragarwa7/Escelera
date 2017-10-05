@@ -10,7 +10,7 @@
                 <p>
                   <%= link_to 'Rent a Car', cars_path, class: 'btn btn-primary btn-lg' %>
                 </p>
-            <% elsif current_user.try(:admin?) or current_user(:superadmin?) %>
+            <% else %>
                 <table class="table">
                   <tr>
                     <th>Model</th>

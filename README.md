@@ -38,3 +38,46 @@ rails server
 ```
 
 Your app will run on http://localhost:3000
+
+### Site Navigation Guide 
+
+###Admin:
+
+Login with admin credentials (Ex: email: 'amith@abc.com', password: 'amith123')
+
+● Manage Admins
+```
+●	  View the list of all the admins: Manage -> Admin
+●	  Create new admins: Manage -> Admin -> Create New
+●	  Delete admins (except themselves and the superadmins): Manage -> Admin -> Create New
+
+**Validations**
+
+●  Admin cannot delete himself since his details are not included while admin tries to manage other admins
+
+```
+
+● Manage Cars
+```
+●  View the list of all Cars with attributes: Manage -> Cars
+    ● Status attributes shows the status of car at present time.
+    ● For details, select "All bookings" option for a particular car.
+    
+●  Add a Car to the system: Manage -> Cars -> Add Car
+    ● To update the status of a new car (by default status is Available):
+         ● Status Reserved: Manage -> Cars -> select Book for new car -> Fill form -> Create Booking
+            (Since a new booking need to be created for this)
+         ● Status Checkedout: Home -> Check Out (for a particular car)
+      
+●  Edit the attributes of a Car: Manage -> Cars -> Edit
+    ●  To update the status of a new car (by default status is Available):
+         ● Status Reserved: Manage -> Cars -> select Book for new car -> Fill form -> Create Booking
+                (Since a new booking need to be created for this)
+         ● Status Checkedout: Home -> Check Out (for a particular car)
+```
+
+```
+Book car for user: Manage -> Car -> select book option for a particular car -> select user and booking dates -> book
+
+```
+

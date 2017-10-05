@@ -12,33 +12,48 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to @car, notice: 'Car was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @car }
+        format.html {redirect_to cars_path, notice: 'Car was successfully created.'}
+        format.json {render action: 'show', status: :created, location: @car}
       else
-        format.html { render action: 'new' }
-        format.json { render json: @car.errors, status: :unprocessable_entity }
+        format.html {render action: 'new'}
+        format.json {render json: @car.errors, status: :unprocessable_entity}
       end
     end
   end
 
   def update
-  end
+    @car = Car.find(params[:id])
+    if Booking.where("car_id = ? AND status == 2", @car.id).to_a().length > 0 then
+      flash[:notice] = "Car Number: #{@car.number.capitalize} is already checkedout. Please manage booking before updating this Car"
+    else
+      if @car.update_attributes(car_params)
+        format.html { redirect_to cars_path, notice: 'Car was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @car.errors, status: :unprocessable_entity }
+      end
+    end
+    respond_to do |format|
+        format.html { redirect_to cars_path}
+        format.json { head :no_content }
+      end
+    end
 
   def edit
     @car = Car.find(params[:id])
-    @car.status = "Available"
-    @booking = Booking.where("car_id = ? AND pickup_time <= ? AND return_time >=  ?",params[:id],DateTime.now.to_s(:db),DateTime.now.to_s(:db))
-    if @booking.exists?
-      @car.status = @booking.last["status"].capitalize
-    end
-
   end
 
   def destroy
-    @car.destroy
+    if Booking.where("car_id = ? AND status == 1 OR status == 2", @car.id).to_a().length > 0 then
+      flash[:notice] = "Car Number: #{@car.number.capitalize} have pending bookings. Please manage booking before deleting this Car"
+    else
+      @car.destroy
+      flash[:notice] = "Car Number: #{@car.number.capitalize} was successfully deleted."
+    end
     respond_to do |format|
-      format.html { redirect_to cars_url }
-      format.json { head :no_content }
+      format.html {redirect_to cars_url}
+      format.json {head :no_content}
     end
   end
 
@@ -70,7 +85,7 @@ class CarsController < ApplicationController
   end
 
   def bookings
-    @bookings = Booking.find_by_car_id(params[:car_id])
+    @bookings = Booking.where(:car_id => params[:car_id])
   end
 
   def authorize_user
@@ -89,19 +104,19 @@ class CarsController < ApplicationController
       @car = Car.find(params[:id])
     end
 
-    def car_params
-      params.require(:car).permit(:model, :manufacturer, :number,
-                                  :rate, :style, :location, :status)
-    end
+  def car_params
+    params.require(:car).permit(:model, :manufacturer, :number,
+                                :rate, :style, :location)
+  end
 
-    def car_status car
-      @booking = Booking.where("car_id = ? AND pickup_time <= ? AND return_time >=  ?",car.id,DateTime.now.to_s(:db),DateTime.now.to_s(:db))
-      status = "Available"
-      if @booking.exists?
-        booking = @booking.last
-        user = User.find(booking["user_id"])
-        status = booking["status"].capitalize + " by " + view_context.link_to(user.name, user_path(user))
-      end
-      status
+  def car_status car
+    @booking = Booking.where("car_id = ? AND pickup_time <= ? AND return_time >=  ?", car.id, DateTime.now.to_s(:db), DateTime.now.to_s(:db))
+    status = "Available"
+    if @booking.exists?
+      booking = @booking.last
+      user = User.find(booking["user_id"])
+      status = booking["status"].capitalize + " by " + view_context.link_to(user.name, user_bookings_url(user.id))
     end
+    status
+  end
 end

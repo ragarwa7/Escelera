@@ -1,4 +1,4 @@
-<h3 class="text-center">List of your Bookings</h3>
+<h3 class="text-center">Booking History of <%= @user.name.capitalize  %> </h3>
 <table class="table">
   <tr>
     <th>Model</th>
@@ -27,3 +27,5 @@
     </tr>
   <% end %>
 </table>
+
+<%= link_to "Back", :back, class: 'btn btn-default btn-sm' %>

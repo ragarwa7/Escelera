@@ -1,8 +1,13 @@
-require 'test_helper'
+  require 'test_helper'
 
 class BookingsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @booking = bookings(:one)
+  end
+
+
   test "should get new" do
-    get bookings_new_url
+    get :new
     assert_response :success
   end
 
