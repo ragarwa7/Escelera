@@ -41,7 +41,7 @@ Your app will run on http://localhost:3000
 
 ### Site Navigation Guide 
 
-###SuperAdmin:
+### SuperAdmin
 
 Login with admin credentials (Ex: email: 'ybajori@ncsu.edu', password: 'yash123')
 
@@ -55,7 +55,7 @@ Login with admin credentials (Ex: email: 'ybajori@ncsu.edu', password: 'yash123'
 ```
 
 
-###Admin:
+### Admin
 
 Login with admin credentials (Ex: email: 'amith@abc.com', password: 'amith123')
 
@@ -112,7 +112,7 @@ Login with admin credentials (Ex: email: 'amith@abc.com', password: 'amith123')
 
 ```
 
-###User:
+### User
 Sign up or Login with user credentials (Ex: email: 'rac@rac.com', password: 'rac123')
 
 ```
